@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:posyandu/model/database_helper.dart';
 import 'registration.dart';
-import 'dashboard_page.dart';
+import 'package:posyandu/components/navbottom.dart';
 import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'model/user.dart';
+import 'package:posyandu/model/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   // ignore: prefer_const_constructors
@@ -91,7 +93,7 @@ class _SplashScreenState extends State<SplashScreen>
           child: FadeTransition(
             opacity: _fadeAnimation,
             child: const Image(
-              image: AssetImage('logo.png'),
+              image: AssetImage('assets/logo.png'),
               width: 250,
               height: 250,
             ),
@@ -123,26 +125,42 @@ class _LoginPageState extends State<LoginPage> {
   bool isPasswordVisible = false;
 
   void _login() async {
-  String email = emailController.text;
-  String password = passwordController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
 
-  User? user = await User.loginUser(email, password);
+    var res = await LocalDatabase().login(User(
+      email: email,
+      password: password,
+    ));
 
-  if (user != null) {
-    _showAwesomeDialog("Login berhasil", DialogType.success);
+    if (res == true) {
+      _showAwesomeDialog("Login berhasil", DialogType.success);
 
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const DashboardPage()),
-      );
-    });
-  } else {
-    _showAwesomeDialog(
+      User? loggedInUser = await LocalDatabase().getUserByEmail(email);
+
+      if (loggedInUser != null) {
+        _saveRememberMe(email); // Save email if "Remember Me" is checked
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NavigationButtom(user: loggedInUser),
+            ),
+          );
+        });
+      } else {
+        _showAwesomeDialog(
+          "Data pengguna tidak ditemukan.",
+          DialogType.error,
+        );
+      }
+    } else {
+      _showAwesomeDialog(
         "Login gagal. Periksa kembali email dan password Anda.",
-        DialogType.error);
+        DialogType.error,
+      );
+    }
   }
-}
 
   void _showAwesomeDialog(String message, DialogType dialogType) {
     AwesomeDialog(
@@ -152,6 +170,26 @@ class _LoginPageState extends State<LoginPage> {
       title: 'Pesan',
       desc: message,
     ).show();
+  }
+
+  void _saveRememberMe(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('rememberedEmail', email);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRememberedEmail();
+  }
+
+  void _loadRememberedEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      emailController.text = prefs.getString('rememberedEmail') ?? '';
+      rememberMeValue =
+          emailController.text.isNotEmpty; // Check if email is remembered
+    });
   }
 
   @override
@@ -173,13 +211,13 @@ class _LoginPageState extends State<LoginPage> {
                       width: 210,
                       height: 210,
                       child: Image(
-                        image: AssetImage('logo.png'),
+                        image: AssetImage('assets/logo.png'),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -191,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -204,9 +242,7 @@ class _LoginPageState extends State<LoginPage> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -299,7 +335,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -338,7 +374,7 @@ class _LoginPageState extends State<LoginPage> {
                   )
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 5),
               Container(
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -357,7 +393,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

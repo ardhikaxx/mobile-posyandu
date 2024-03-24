@@ -1,26 +1,27 @@
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class User {
-  String email;
-  String nikIbu;
-  String namaIbu;
-  String gender;
-  String placeOfBirth;
-  String birthDate;
-  String alamat;
-  String telepon;
-  String password;
+  final int? id;
+  final String email;
+  final String? nikIbu;
+  final String? namaIbu;
+  final String? gender;
+  final String? placeOfBirth;
+  final String? birthDate;
+  final String? alamat;
+  final String? telepon;
+  final String password;
 
   User({
+    this.id,
     required this.email,
-    required this.nikIbu,
-    required this.namaIbu,
-    required this.gender,
-    required this.placeOfBirth,
-    required this.birthDate,
-    required this.alamat,
-    required this.telepon,
+    this.nikIbu,
+    this.namaIbu,
+    this.gender,
+    this.placeOfBirth,
+    this.birthDate,
+    this.alamat,
+    this.telepon,
     required this.password,
   });
 
@@ -30,8 +31,9 @@ class User {
 
   get nik => null;
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "email": email,
       "nikIbu": nikIbu,
       "namaIbu": namaIbu,
@@ -44,31 +46,23 @@ class User {
     };
   }
 
-  static Future<User?> loginUser(String email, String password) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? storedUserData = prefs.getString('userData');
-
-    if (storedUserData != null) {
-      Map<String, dynamic> userData = jsonDecode(storedUserData);
-      if (userData['email'] == email && userData['password'] == password) {
-        return User.fromJson(userData);
-      }
-    }
-
-    return null;
-  }
-
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      email: json['email'],
-      nikIbu: json['nikIbu'],
-      namaIbu: json['namaIbu'],
-      gender: json['gender'],
-      placeOfBirth: json['placeOfBirth'],
-      birthDate: json['birthDate'],
-      alamat: json['alamat'],
-      telepon: json['telepon'],
-      password: json['password'],
+      id: map['id']?.toInt(),
+      email: map['email'],
+      nikIbu: map['nikIbu'],
+      namaIbu: map['namaIbu'],
+      gender: map['gender'],
+      placeOfBirth: map['placeOfBirth'],
+      birthDate: map['birthDate'],
+      alamat: map['alamat'],
+      telepon: map['telepon'],
+      password: map['password'],
     );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory User.fromJson(String source) =>
+      User.fromMap(json.encode(source) as Map<String, dynamic>);
 }
