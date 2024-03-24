@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:posyandu/model/database_helper.dart';
 import 'main.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'model/user.dart';
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -36,7 +35,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController teleponController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-   void registerButtonPressed() async {
+  void registerButtonPressed() async {
     if (_formKey.currentState!.validate()) {
       String email = emailController.text;
       String nikIbu = nikIbuController.text;
@@ -48,19 +47,31 @@ class _RegistrationPageState extends State<RegistrationPage> {
       String telepon = teleponController.text;
       String password = passwordController.text;
 
-      String dialogText = '''
-      Email: $email
-      NIK Ibu: $nikIbu
-      Nama Ibu: $namaIbu
-      Gender: $gender
-      Place of Birth: $placeOfBirth
-      Birth Date: $birthDate
-      Alamat: $alamat
-      Telepon: $telepon
-      Password: $password
-    ''';
+      User newUser = User(
+        email: emailController.text,
+        nikIbu: nikIbuController.text,
+        namaIbu: namaIbuController.text,
+        gender: selectedGender,
+        placeOfBirth: placeOfBirthController.text,
+        birthDate: birthDateController.text,
+        alamat: alamatController.text,
+        telepon: teleponController.text,
+        password: passwordController.text,
+      );
+      LocalDatabase().insertData(newUser);
 
-      // Show AwesomeDialog to display registration data
+      String dialogText = '''
+        Email: $email
+        NIK Ibu: $nikIbu
+        Nama Ibu: $namaIbu
+        Gender: $gender
+        Place of Birth: $placeOfBirth
+        Birth Date: $birthDate
+        Alamat: $alamat
+        Telepon: $telepon
+        Password: $password
+      ''';
+
       AwesomeDialog(
         context: context,
         dialogType: DialogType.success,
@@ -69,73 +80,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
         desc: dialogText,
         btnOkText: 'Iya',
         btnCancelText: 'Tidak',
-        btnOkOnPress: () async {
-          // Save data to local storage
-          bool saveResult = await saveUserDataToLocalStorage();
-
-          // Show additional AwesomeDialog based on the save result
-          if (saveResult) {
-            AwesomeDialog(
-              // ignore: use_build_context_synchronously
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.topSlide,
-              title: 'Registration Success',
-              desc: 'Data has been successfully saved.',
-              btnOkText: 'OK',
-              btnOkOnPress: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
-              },
-            ).show();
-          } else {
-            AwesomeDialog(
-              // ignore: use_build_context_synchronously
-              context: context,
-              dialogType: DialogType.error,
-              animType: AnimType.topSlide,
-              title: 'Error',
-              desc: 'Failed to save data to local storage.',
-            ).show();
-          }
-        },
-        btnCancelOnPress: () {
-          Navigator.of(context).pop();
+        btnOkOnPress: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
         },
       ).show();
     }
-  }
-
-  Future<bool> saveUserDataToLocalStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    User user = User(
-      email: emailController.text,
-      nikIbu: nikIbuController.text,
-      namaIbu: namaIbuController.text,
-      gender: selectedGender,
-      placeOfBirth: placeOfBirthController.text,
-      birthDate: birthDateController.text,
-      alamat: alamatController.text,
-      telepon: teleponController.text,
-      password: passwordController.text,
-    );
-
-    String userJson = jsonEncode(user.toJson());
-
-    await prefs.setString('userData', userJson);
-    return true;
-  }
-
-  Future<User?> getUserDataFromLocalStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userJson = prefs.getString('userData');
-    if (userJson != null) {
-      Map<String, dynamic> userMap = jsonDecode(userJson);
-      return User.fromJson(userMap);
-    }
-    return null;
   }
 
   @override
@@ -470,9 +422,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 builder: (BuildContext context, Widget? child) {
                                   return Theme(
                                     data: ThemeData.light().copyWith(
-                                      primaryColor: const Color(0xFF0F6ECD),
-                                      hintColor: const Color(0xFF0F6ECD),
                                       colorScheme: const ColorScheme.light(
+                                        background: Colors.white,
                                         primary: Color(0xFF0F6ECD),
                                       ),
                                       buttonTheme: const ButtonThemeData(
