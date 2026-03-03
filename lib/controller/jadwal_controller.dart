@@ -1,8 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'connect.dart';
 
 class JadwalPosyanduController {
-  static String apiUrl = 'http://192.168.100.171:8000';
+  static String apiUrl = apiConnect;
 
   static Future<List<dynamic>> fetchJadwalPosyandu(int bulan, int tahun) async {
     final url = Uri.parse('$apiUrl/api/jadwal-posyandu?bulan=$bulan&tahun=$tahun');

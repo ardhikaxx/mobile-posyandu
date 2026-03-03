@@ -1,15 +1,16 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'connect.dart';
 
 class ArtikelController {
-  static String apiUrl = 'http://192.168.100.171:8000';
+  static String apiUrl = apiConnect;
   static List<Artikel> artikelData = [];
 
   Future<void> fetchArtikelData(BuildContext context) async {
     try {
       final response = await http.get(
-        Uri.parse("${ArtikelController.apiUrl}/api/edukasi"),
+        Uri.parse("$apiUrl/api/edukasi"),
       );
       if (response.statusCode == 200) {
         final jsonGet = jsonDecode(response.body) as Map<String, dynamic>;

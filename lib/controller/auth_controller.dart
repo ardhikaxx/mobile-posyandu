@@ -6,9 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:mobile_posyandu/components/navbottom.dart';
 import 'package:mobile_posyandu/auth/login.dart';
 import 'package:mobile_posyandu/model/user.dart';
+import 'connect.dart';
 
 class ApiConfig {
-  static String apiUrl = "http://192.168.100.171:8000";
+  static String apiUrl = apiConnect;
 
   void setApiUrl(String newUrl) {
     apiUrl = newUrl;

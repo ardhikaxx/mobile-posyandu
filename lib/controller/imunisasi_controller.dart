@@ -2,9 +2,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:mobile_posyandu/controller/auth_controller.dart';
+import 'connect.dart';
 
 class ImunisasiController {
-  static String apiUrl = "http://192.168.100.171:8000";
+  static String apiUrl = apiConnect;
   static List imunisasiData = [];
 
   static void setApiUrl(String newUrl) {
