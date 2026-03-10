@@ -131,14 +131,6 @@ flutter run
 
 ---
 
-## 📸 Tampilan Aplikasi
-
-| Splash Screen | Login | Dashboard |
-|:-------------:|:-----:|:---------:|
-| ![Splash] | ![Login] | ![Dashboard] |
-
----
-
 ## 📋 Requirements
 
 - ✅ Flutter SDK >= 3.9.2
