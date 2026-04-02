@@ -116,172 +116,339 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget _buildProfile(UserData userData) {
-    return Padding(
-      padding: EdgeInsets.zero,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF006BFA),
-                    Color(0xFF4B8BFF),
-                  ],
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(userData),
+          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSectionHeader('Data Anak'),
+                const SizedBox(height: 16),
+                dataAnak.isEmpty
+                    ? Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(Icons.child_care_rounded,
+                                size: 48, color: Colors.grey[300]),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Belum ada data anak',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[500],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : SizedBox(
+                        height: 185,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: dataAnak.length,
+                          itemBuilder: (context, index) {
+                            return _buildChildCard(dataAnak[index]);
+                          },
+                        ),
+                      ),
+                const SizedBox(height: 32),
+                _buildSectionHeader('Informasi Akun'),
+                const SizedBox(height: 16),
+                _buildAccountInfo(userData),
+                const SizedBox(height: 32),
+                _buildSectionHeader('Pengaturan'),
+                const SizedBox(height: 16),
+                _buildActionButton(
+                  icon: Icons.edit_note_rounded,
+                  title: 'Edit Profil',
+                  color: const Color(0xFF006BFA),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditProfile(
+                            userData: userData, onUpdate: _updateProfile),
+                      ),
+                    );
+                  },
                 ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF006BFA).withOpacity(0.35),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: -30,
-                    right: -30,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: RadialGradient(
-                          colors: [
-                            Colors.white.withOpacity(0.12),
-                            Colors.white.withOpacity(0),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: -20,
-                    left: -20,
-                    child: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: RadialGradient(
-                          colors: [
-                            Colors.white.withOpacity(0.08),
-                            Colors.white.withOpacity(0),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.2),
-                              width: 3,
-                            ),
-                          ),
-                          child: Container(
-                            width: 70,
-                            height: 70,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                            ),
-                            child: const Icon(
-                              Icons.person,
-                              color: Colors.grey,
-                              size: 35,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            userData.namaIbu,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            userData.noKk.toString(),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.white70,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                const SizedBox(height: 12),
+                _buildActionButton(
+                  icon: Icons.logout_rounded,
+                  title: 'Keluar dari Akun',
+                  color: Colors.redAccent,
+                  onTap: () => _showLogoutConfirmation(context),
+                ),
+                const SizedBox(height: 40),
+              ],
             ),
-            const SizedBox(height: 20),
-            dataAnak.isEmpty
-                ? const Column(
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(UserData userData) {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF006BFA), Color(0xFF4B8BFF)],
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: -20,
+            right: -20,
+            child: CircleAvatar(
+              radius: 60,
+              backgroundColor: Colors.white.withOpacity(0.1),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+            child: Column(
+              children: [
+                Center(
+                  child: Stack(
                     children: [
-                      Text(
-                        'Tidak ada data anak',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54,
+                      Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.person,
+                              size: 50, color: Color(0xFF006BFA)),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.verified_user_rounded,
+                              size: 14, color: Colors.green),
                         ),
                       ),
                     ],
-                  )
-                : SizedBox(
-                    height: 175,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: dataAnak.length,
-                      itemBuilder: (context, index) {
-                        return _buildChildCard(dataAnak[index]);
-                      },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  userData.namaIbu,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'NIK: ${userData.nikIbu}',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white.withOpacity(0.9),
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1A1D26),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAccountInfo(UserData userData) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 15,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildInfoRow(Icons.credit_card_rounded, 'Nomor KK',
+              userData.noKk.toString()),
+          const Divider(height: 24, thickness: 1),
+          _buildInfoRow(Icons.phone_iphone_rounded, 'No. Telepon',
+              userData.telepon),
+          const Divider(height: 24, thickness: 1),
+          _buildInfoRow(Icons.email_outlined, 'Email', userData.emailOrangTua),
+          const Divider(height: 24, thickness: 1),
+          _buildInfoRow(Icons.map_outlined, 'Alamat', userData.alamat),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: const Color(0xFF006BFA).withOpacity(0.08),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, size: 20, color: const Color(0xFF006BFA)),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[500],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Color(0xFF1A1D26),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String title,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(icon, size: 22, color: color),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: color == Colors.redAccent
+                          ? Colors.redAccent
+                          : const Color(0xFF1A1D26),
                     ),
                   ),
-            const SizedBox(height: 12),
-            _buildEditButton(),
-            const SizedBox(height: 12),
-            _buildLogoutButton(context),
-          ],
+                ),
+                Icon(Icons.chevron_right_rounded,
+                    size: 24, color: Colors.grey[400]),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
+
 
   Widget _buildChildCard(Map<String, dynamic> dataAnak) {
     Color backgroundColor;
