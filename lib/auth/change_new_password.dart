@@ -202,7 +202,7 @@ class _NewChangePasswordState extends State<NewChangePassword> {
                           context: context,
                           dialogType: DialogType.error,
                           animType: AnimType.bottomSlide,
-                          title: 'Error',
+                          title: 'Kesalahan',
                           desc: 'Password tidak boleh kosong',
                         ).show();
                         return;
@@ -213,7 +213,7 @@ class _NewChangePasswordState extends State<NewChangePassword> {
                           context: context,
                           dialogType: DialogType.error,
                           animType: AnimType.bottomSlide,
-                          title: 'Error',
+                          title: 'Kesalahan',
                           desc: 'Password tidak sesuai',
                         ).show();
                         return;

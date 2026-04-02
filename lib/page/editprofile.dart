@@ -94,7 +94,7 @@ class _EditProfileState extends State<EditProfile> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'Edit Profile',
+          'Edit Profil',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,

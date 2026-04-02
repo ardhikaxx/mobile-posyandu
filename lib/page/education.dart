@@ -122,7 +122,7 @@ class _EducationState extends State<Education> {
                     },
                   );
                 } else {
-                  return const Center(child: Text('No articles available'));
+                  return const Center(child: Text('Tidak ada artikel'));
                 }
               },
             ),

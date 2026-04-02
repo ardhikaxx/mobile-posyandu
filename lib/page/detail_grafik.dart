@@ -9,6 +9,19 @@ class DetailGrafik extends StatelessWidget {
 
   const DetailGrafik({super.key, required this.dataAnak});
 
+  String _getNamaPendek(dynamic nama) {
+    if (nama == null) return 'Detail Grafik';
+    String name = nama.toString();
+    if (name.isEmpty) return 'Detail Grafik';
+    if (name.length > 18) {
+      List<String> words = name.split(' ');
+      if (words.length > 2) {
+        return '${words[0]} ${words[1]}';
+      }
+    }
+    return name;
+  }
+
   @override
   Widget build(BuildContext context) {
     final posyanduData = dataAnak['posyandu'] ?? [];
@@ -19,7 +32,7 @@ class DetailGrafik extends StatelessWidget {
       backgroundColor: const Color(0xFFF6F6F6),
       appBar: AppBar(
         title: Text(
-          dataAnak['nama_anak'] ?? 'Detail Grafik',
+          _getNamaPendek(dataAnak['nama_anak']),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -279,7 +292,7 @@ class DetailGrafik extends StatelessWidget {
       final monthNumber = parsedDate.month;
       return monthNames[monthNumber - 1];
     } catch (e) {
-      return 'Unknown';
+      return 'Tidak diketahui';
     }
   }
 }

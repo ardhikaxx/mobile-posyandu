@@ -191,8 +191,14 @@ class _DashboardPageState extends State<DashboardPage> {
   String _getNamaAnak(dynamic value) {
     try {
       if (value == null) return 'Tidak ada nama';
-      if (value is String) return value;
-      return value.toString();
+      String name = value is String ? value : value.toString();
+      if (name.length > 18) {
+        List<String> words = name.split(' ');
+        if (words.length > 2) {
+          return '${words[0]} ${words[1]}';
+        }
+      }
+      return name;
     } catch (e) {
       return 'Tidak ada nama';
     }

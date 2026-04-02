@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Please sign in to continue.",
+                    "Mohon masuk untuk melanjutkan.",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -217,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const Text(
-                          "Remember Me",
+                          "Ingat Saya",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -235,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: const Text(
-                        "Forgot Password?",
+                        "Lupa Password?",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -290,7 +290,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Sudah memiliki akun? ",
+                      "Belum punya akun? ",
                       style:
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                     ),
@@ -303,7 +303,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: const Text(
-                        "Registrasi",
+                        "Daftar di sini",
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

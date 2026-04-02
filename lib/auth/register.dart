@@ -816,7 +816,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                       onPressed: () => registerButtonPressed(context),
                       child: const Text(
-                        "REGISTER",
+                          "DAFTAR",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

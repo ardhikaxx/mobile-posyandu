@@ -69,11 +69,11 @@ class _NavigationButtomState extends State<NavigationButtom> {
         ),
         child: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
-            _buildNavBarItem(FontAwesomeIcons.house, "Home", 0),
+            _buildNavBarItem(FontAwesomeIcons.house, "Beranda", 0),
             _buildNavBarItem(Icons.newspaper, "Edukasi", 1),
             _buildNavBarItem(FontAwesomeIcons.chartColumn, "Grafik", 2),
             _buildNavBarItem(FontAwesomeIcons.notesMedical, "Imunisasi", 3),
-            _buildNavBarItem(Icons.person_sharp, "Profile", 4),
+            _buildNavBarItem(Icons.person_sharp, "Profil", 4),
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,

@@ -51,7 +51,7 @@ class AuthController {
           } catch (e) {
             print('Error parsing user data: $e');
             // ignore: use_build_context_synchronously
-            _showLoginErrorDialog(context, 'Error parsing data user: $e');
+            _showLoginErrorDialog(context, 'Gagal parsing data user');
           }
         } else {
           print('Invalid response structure');
@@ -286,7 +286,7 @@ class AuthController {
           context: context,
           dialogType: DialogType.success,
           animType: AnimType.bottomSlide,
-          title: 'Success',
+          title: 'Berhasil',
           desc: message,
           btnOkText: 'OK',
           btnOkOnPress: () {
@@ -305,7 +305,7 @@ class AuthController {
           context: context,
           dialogType: DialogType.error,
           animType: AnimType.bottomSlide,
-          title: 'Error',
+          title: 'Kesalahan',
           desc: message,
         ).show();
       }
@@ -316,7 +316,7 @@ class AuthController {
         context: context,
         dialogType: DialogType.error,
         animType: AnimType.bottomSlide,
-        title: 'Error',
+        title: 'Kesalahan',
         desc: 'Gagal memperbarui password',
       ).show();
     }
@@ -328,7 +328,7 @@ void _showMessageDialog(BuildContext context, String data, UserData userData) {
     context: context,
     dialogType: DialogType.success,
     animType: AnimType.bottomSlide,
-    title: 'Login Successful',
+    title: 'Login Berhasil',
     desc: 'Selamat Datang, $data!',
   ).show();
 

@@ -51,6 +51,17 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  String _getNamaPendek(String? nama) {
+    if (nama == null || nama.isEmpty) return '-';
+    if (nama.length > 18) {
+      List<String> words = nama.split(' ');
+      if (words.length > 2) {
+        return '${words[0]} ${words[1]}';
+      }
+    }
+    return nama;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +69,7 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF006BFA),
         title: const Text(
-          'Profile',
+          'Profil',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -93,12 +104,12 @@ class _ProfileState extends State<Profile> {
             direction: SkeletonDirection.ltr,
           );
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(child: Text('Kesalahan: ${snapshot.error}'));
         } else if (snapshot.hasData && snapshot.data != null) {
           userData = snapshot.data!;
           return _buildProfile(userData);
         } else {
-          return const Center(child: Text('No Data'));
+          return const Center(child: Text('Tidak ada data'));
         }
       },
     );
@@ -113,66 +124,132 @@ class _ProfileState extends State<Profile> {
           children: [
             Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color(0xFF006BFA),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF006BFA),
+                    Color(0xFF4B8BFF),
+                  ],
                 ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF006BFA).withOpacity(0.35),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Stack(
                 children: [
-                  Container(
-                    width: 90,
-                    height: 90,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 15,
-                          offset: const Offset(0, 8),
+                  Positioned(
+                    top: -30,
+                    right: -30,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            Colors.white.withOpacity(0.12),
+                            Colors.white.withOpacity(0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -20,
+                    left: -20,
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            Colors.white.withOpacity(0.08),
+                            Colors.white.withOpacity(0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.2),
+                              width: 3,
+                            ),
+                          ),
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              color: Colors.grey,
+                              size: 35,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            userData.namaIbu,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            userData.noKk.toString(),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    child: const Icon(
-                      Icons.person,
-                      color: Colors.grey,
-                      size: 50,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        userData.namaIbu,
-                        style: const TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 1),
-                      Text(
-                        userData.noKk.toString(),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             dataAnak.isEmpty
                 ? const Column(
                     children: [
@@ -187,7 +264,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   )
                 : SizedBox(
-                    height: 200,
+                    height: 175,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: dataAnak.length,
@@ -196,9 +273,9 @@ class _ProfileState extends State<Profile> {
                       },
                     ),
                   ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             _buildEditButton(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             _buildLogoutButton(context),
           ],
         ),
@@ -211,63 +288,118 @@ class _ProfileState extends State<Profile> {
     Color iconColor;
 
     if (dataAnak['jenis_kelamin_anak'] == 'Laki-laki') {
-      backgroundColor = Colors.blue.shade300;
-      iconColor = Colors.blue.shade400;
+      backgroundColor = Colors.blue.shade400;
+      iconColor = Colors.blue.shade600;
     } else {
-      backgroundColor = Colors.pink.shade200;
-      iconColor = Colors.pink.shade300;
+      backgroundColor = Colors.pink.shade400;
+      iconColor = Colors.pink.shade600;
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 5,
-      ),
-      padding: const EdgeInsets.all(20),
-      width: 200,
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      width: 170,
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(15),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            backgroundColor,
+            backgroundColor.withOpacity(0.8),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: backgroundColor.withOpacity(0.4),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.white,
-            child: FaIcon(
-              dataAnak['jenis_kelamin_anak'] == 'Laki-laki'
-                  ? FontAwesomeIcons.child
-                  : FontAwesomeIcons.childDress,
-              color: iconColor,
-              size: 30,
+          Positioned(
+            top: -25,
+            right: -25,
+            child: Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withOpacity(0.1),
+              ),
             ),
           ),
-          const SizedBox(height: 5),
-          Text(
-            dataAnak['nama_anak'],
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          Positioned(
+            bottom: -15,
+            left: -15,
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withOpacity(0.1),
+              ),
             ),
-            textAlign: TextAlign.start,
           ),
-          const SizedBox(height: 2),
-          Text(
-            'Anak ke-${dataAnak['anak_ke']}',
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.white,
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 26,
+                    backgroundColor: Colors.white,
+                    child: FaIcon(
+                      dataAnak['jenis_kelamin_anak'] == 'Laki-laki'
+                          ? FontAwesomeIcons.child
+                          : FontAwesomeIcons.childDress,
+                      color: iconColor,
+                      size: 26,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    _getNamaPendek(dataAnak['nama_anak']?.toString()),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'Anak ke-${dataAnak['anak_ke']}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    dataAnak['jenis_kelamin_anak'].toString(),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.white.withOpacity(0.9),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            textAlign: TextAlign.start,
-          ),
-          const SizedBox(height: 2),
-          Text(
-            dataAnak['jenis_kelamin_anak'].toString(),
-            style: const TextStyle(fontSize: 18, color: Colors.white),
-            textAlign: TextAlign.start,
           ),
         ],
       ),
@@ -277,11 +409,14 @@ class _ProfileState extends State<Profile> {
   Widget _buildEditButton() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
-      child: SizedBox(
-        width: double.infinity,
-        height: 55,
-        child: ElevatedButton(
-          onPressed: () {
+      child: Card(
+        elevation: 2,
+        shadowColor: const Color(0xFF006BFA).withOpacity(0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: InkWell(
+          onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -290,46 +425,48 @@ class _ProfileState extends State<Profile> {
               ),
             );
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue.shade50,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: const EdgeInsets.only(right: 10),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(13),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF006BFA),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.edit,
-                      size: 28,
-                      color: Colors.white,
-                    ),
+          borderRadius: BorderRadius.circular(15),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF006BFA).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const SizedBox(width: 10),
-                  const Text(
-                    'Edit Profile',
+                  child: const Icon(
+                    Icons.edit_outlined,
+                    size: 24,
+                    color: Color(0xFF006BFA),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                const Expanded(
+                  child: Text(
+                    'Edit Profil',
                     style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1A1D26),
                     ),
                   ),
-                ],
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-              ),
-            ],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF006BFA).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: Color(0xFF006BFA),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -339,53 +476,58 @@ class _ProfileState extends State<Profile> {
   Widget _buildLogoutButton(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
-      child: SizedBox(
-        width: double.infinity,
-        height: 55,
-        child: ElevatedButton(
-          onPressed: () {
+      child: Card(
+        elevation: 2,
+        shadowColor: Colors.red.withOpacity(0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: InkWell(
+          onTap: () {
             _showLogoutConfirmation(context);
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue.shade50,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: const EdgeInsets.only(right: 10),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(13),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF006BFA),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.logout,
-                      size: 28,
-                      color: Colors.white,
-                    ),
+          borderRadius: BorderRadius.circular(15),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const SizedBox(width: 10),
-                  const Text(
+                  child: const Icon(
+                    Icons.logout,
+                    size: 24,
+                    color: Colors.red,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                const Expanded(
+                  child: Text(
                     'Logout',
                     style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1A1D26),
                     ),
                   ),
-                ],
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-              ),
-            ],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

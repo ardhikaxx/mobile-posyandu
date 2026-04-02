@@ -192,7 +192,7 @@ class ForgotPassword extends StatelessWidget {
                       Get.to(LoginPage());
                     },
                     child: const Text(
-                      "Cancel",
+                      "Batal",
                       style: TextStyle(
                           color: Color(0xFF006BFA),
                           fontWeight: FontWeight.bold,

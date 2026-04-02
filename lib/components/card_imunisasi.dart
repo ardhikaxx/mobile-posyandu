@@ -7,6 +7,17 @@ class CardImunisasi extends StatelessWidget {
 
   const CardImunisasi({super.key, required this.dataAnak});
 
+  String _getNamaPendek(String? nama) {
+    if (nama == null || nama.isEmpty) return '-';
+    if (nama.length > 18) {
+      List<String> words = nama.split(' ');
+      if (words.length > 2) {
+        return '${words[0]} ${words[1]}';
+      }
+    }
+    return nama;
+  }
+
   @override
   Widget build(BuildContext context) {
     Color backgroundColor;
@@ -70,7 +81,7 @@ class CardImunisasi extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        dataAnak['nama_anak'].toString(),
+                        _getNamaPendek(dataAnak['nama_anak']?.toString()),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

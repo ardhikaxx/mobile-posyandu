@@ -181,7 +181,7 @@ class _DetailEducationState extends State<DetailEducation> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Related Education',
+          'Edukasi Terkait',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,

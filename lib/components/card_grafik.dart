@@ -7,6 +7,19 @@ class CardAnak extends StatelessWidget {
 
   const CardAnak({super.key, required this.dataAnak});
 
+  String _getNamaPendek(dynamic nama) {
+    if (nama == null) return '-';
+    String name = nama.toString();
+    if (name.isEmpty) return '-';
+    if (name.length > 18) {
+      List<String> words = name.split(' ');
+      if (words.length > 2) {
+        return '${words[0]} ${words[1]}';
+      }
+    }
+    return name;
+  }
+
   @override
   Widget build(BuildContext context) {
     IconData genderIcon;
@@ -84,7 +97,7 @@ class CardAnak extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    dataAnak['nama_anak'],
+                    _getNamaPendek(dataAnak['nama_anak']),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -111,11 +124,13 @@ class CardAnak extends StatelessWidget {
                   ),
                 ],
               ),
-              const Spacer(),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: 35,
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 24,
+                ),
               ),
             ],
           ),
