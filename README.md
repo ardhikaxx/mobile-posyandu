@@ -1,153 +1,112 @@
-# 📱 Mobile Posyandu
+# 👶 Sistem Manajemen Data Kesehatan Posyandu - Akses Orang Tua
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Flutter-3.9.2-blue?style=for-the-badge&logo=flutter" alt="Flutter">
-  <img src="https://img.shields.io/badge/Dart-3.0.0-blue?style=for-the-badge&logo=dart" alt="Dart">
-  <img src="https://img.shields.io/badge/License-Educational-green?style=for-the-badge" alt="License">
-</p>
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev)
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com)
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](./LICENSE)
+[![Author](https://img.shields.io/badge/Author-Yanuar%20Ardhika%20Rahmadhani%20Ubaidillah-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ardhikaxx)
 
-> Aplikasi mobile Posyandu (Pos Layanan Terpadu) untuk membantu ibu dalam memantau kesehatan dan perkembangan anak dengan mudah dan praktis.
+Aplikasi mobile **Posyandu - Akses Orang Tua** (Flutter) adalah buku KIA digital: data anak, grafik pertumbuhan BB/TB/lingkar kepala, riwayat imunisasi & vitamin, jadwal posyandu, dan edukasi. Terhubung ke sistem Web Tenaga Kesehatan.
 
 ---
 
 ## ✨ Fitur Utama
 
-### 🔐 Autentikasi
-| Fitur | Deskripsi |
-|-------|-----------|
-| Login | Masuk ke aplikasi dengan akun yang terdaftar |
-| Register | Mendaftarkan akun baru |
-| Lupa Password | Mengatur ulang kata sandi yang lupa |
-| Ganti Password | Mengubah kata sandi akun |
+### 1. 👶 Data Anak
+- Profil anak, NIK, tanggal lahir, orang tua.
 
-### 📊 Dashboard
-- Menampilkan pesan selamat datang dengan nama ibu
-- Melihat jadwal posyandu bulan ini
-- Melihat data perkembangan anak (berat & tinggi badan)
-- Indikator tren perkembangan (naik 📈, turun 📉, stabil ➡️)
+### 2. 📈 Grafik Pertumbuhan
+- Kurva BB/U, TB/U sesuai standar WHO.
 
-### 💉 Imunisasi
-- Melihat riwayat imunisasi anak
-- Informasi jadwal imunisasi lengkap
-- Detail imunisasi masing-masing anak
+### 3. 💉 Imunisasi
+- Jadwal & riwayat imunisasi + vitamin A.
 
-### 📈 Grafik Pertumbuhan
-- Grafik pertumbuhan berat badan anak
-- Grafik pertumbuhan tinggi badan anak
-- Visualisasi data posyandu interaktif
+### 4. 🗓️ Jadwal Posyandu
+- Info jadwal & pengumuman posyandu.
 
-### 📚 Edukasi
-- Artikel kesehatan ibu dan anak
-- Tips perawatan kesehatan
-- Informasi tentang tumbuh kembang anak
-
-### 👤 Profil Pengguna
-- Melihat data profil
-- Mengedit informasi profil
+### 5. 📖 Edukasi KIA
+- Artikel gizi, MPASI, dan stimulasi.
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## 👥 Hak Akses Pengguna (Role-Based Access Control)
 
-<div align="center">
+| Role | Akses & Wewenang |
+| :--- | :--- |
+| **Orang Tua** | Pantau tumbuh kembang anak. |
+| **Sistem** | Sinkron dengan dashboard nakes. |
 
-| Teknologi | Penggunaan |
-|------------|------------|
-| <img src="https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter" height="20"> | Framework cross-platform |
-| <img src="https://img.shields.io/badge/Dart-0175C2?style=flat&logo=dart" height="20"> | Bahasa pemrograman |
-| <img src="https://img.shields.io/badge/GetX-4.6.6-red?style=flat" height="20"> | State management & routing |
-| <img src="https://img.shields.io/badge/Dio-5.4.3-blue?style=flat" height="20"> | HTTP client |
-| <img src="https://img.shields.io/badge/Syncfusion-Charts-orange?style=flat" height="20"> | Visualisasi grafik |
-| <img src="https://img.shields.io/badge/SQLite-2.3.3-green?style=flat" height="20"> | Local database |
-| <img src="https://img.shields.io/badge/SharedPreferences-2.2.3-blue?style=flat" height="20"> | Penyimpanan lokal |
-
-</div>
+> Otorisasi ditegakkan di backend (middleware/Policy) — bukan sekadar menyembunyikan menu.
 
 ---
 
-## 📁 Struktur Proyek
+## 🛠️ Tech Stack & Dependensi
 
-```
-📂 lib/
-├── 📂 auth/                    # Halaman autentikasi
-│   ├── login.dart
-│   ├── register.dart
-│   ├── forgot_password.dart
-│   └── change_new_password.dart
-│
-├── 📂 components/              # Komponen UI reusable
-│   ├── card_grafik.dart
-│   ├── card_imunisasi.dart
-│   ├── card_artikel.dart
-│   └── navbottom.dart
-│
-├── 📂 controller/              # Controller bisnis
-│   ├── auth_controller.dart
-│   ├── jadwal_controller.dart
-│   ├── imunisasi_controller.dart
-│   ├── grafik_controller.dart
-│   └── artikel_controller.dart
-│
-├── 📂 model/                   # Model data
-│   └── user.dart
-│
-├── 📂 page/                    # Halaman utama
-│   ├── dashboard_page.dart
-│   ├── imunisasi.dart
-│   ├── grafik.dart
-│   ├── education.dart
-│   └── userprofile.dart
-│
-└── main.dart                    # Entry point
-```
+* **Mobile**: Flutter 3.x (Dart 3+)
+* **Backend**: Firebase / REST API (sinkronisasi cloud)
+* **Storage Lokal**: SQLite / SharedPreferences (offline-first)
+* **UI**: Material Design 3
 
 ---
 
-## 🚀 Cara Menjalankan
+## ⚙️ Panduan Instalasi & Menjalankan Aplikasi
 
-### 1. Prerequisites
-- Flutter SDK >= 3.9.2
-- Dart SDK >= 3.0.0
-
-### 2. Clone & Install
-
+### 1. Kloning Repositori
 ```bash
-# Clone repository
-git clone https://github.com/ardhikaxx/mobile-posyandu.git
-
-# Masuk ke direktori
+git clone https://github.com/ardhikaxx/mobile-posyandu
 cd mobile-posyandu
+```
 
-# Install dependencies
+### 2. Install Dependensi
+```bash
 flutter pub get
 ```
 
-### 3. Run Aplikasi
-
+### 3. Jalankan Aplikasi
 ```bash
-# Jalankan aplikasi
 flutter run
+```
+Untuk build release:
+```bash
+flutter build apk --release
 ```
 
 ---
 
-## 📋 Requirements
+## 📚 Dokumentasi Sistem
 
-- ✅ Flutter SDK >= 3.9.2
-- ✅ Dart SDK >= 3.0.0
-- ✅ Android SDK (untuk Android)
-- ✅ Xcode (untuk iOS)
-
----
-
-## 📄 Lisensi
-
-Proyek ini dibuat untuk tujuan **educational**.
+* [⚖️ **LICENSE**](./LICENSE) — Lisensi resmi **Proprietary Software License (All Rights Reserved)**.
+* [🛡️ **SECURITY.md**](./SECURITY.md) — Kebijakan keamanan & pelaporan celah (*Responsible Disclosure*).
+* [🤝 **CONTRIBUTING.md**](./CONTRIBUTING.md) — Pedoman kontribusi kode & standar.
+* [📜 **CODE_OF_CONDUCT.md**](./CODE_OF_CONDUCT.md) — Pedoman perilaku komunitas pengembang.
+* [💬 **SUPPORT.md**](./SUPPORT.md) — Kanal bantuan teknis & komunikasi resmi pengembang.
+* [📋 **CHANGELOG.md**](./CHANGELOG.md) — Riwayat rilis fitur terstruktur (*Keep a Changelog* & SemVer).
+* [📚 **CITATION.md**](./CITATION.md) — Format sitasi karya untuk keperluan akademik.
 
 ---
 
-<div align="center">
+## 💖 Dukungan & Donasi
 
-**Made with ❤️ using Flutter**
+Jika proyek **Sistem Manajemen Data Kesehatan Posyandu - Akses Orang Tua** ini bermanfaat bagi Anda dan telah menghemat banyak jam kerja Anda, Anda dapat menunjukkan apresiasi dengan memberikan traktiran kopi (donasi) melalui pemindaian kode QRIS di bawah ini:
 
-</div>
+<p align="center">
+  <img src="./qris.png" alt="QRIS Donasi" width="300"/>
+</p>
+
+> Donasi sepenuhnya bersifat sukarela dan tidak mengikat. Aplikasi tetap dapat digunakan secara utuh tanpa donasi.
+
+---
+
+## ⚠️ Ketentuan Penggunaan
+
+Proyek ini dilindungi lisensi **Proprietary Software License (All Rights Reserved)**. Anda **dilarang** menyalin, memodifikasi, mendistribusikan ulang, atau menjual kode ini tanpa izin tertulis dari pemilik hak cipta. Lihat [LICENSE](./LICENSE) untuk detail lengkap.
+
+---
+
+## 👨‍💻 Pengembang & Hak Cipta
+
+Dirancang dan dikembangkan dengan penuh dedikasi oleh:
+**[Yanuar Ardhika Rahmadhani Ubaidillah (@ardhikaxx)](https://github.com/ardhikaxx)**
+*Lead Software Architect & Maintainer*
+
+> **Copyright (c) 2024 - 2026 Yanuar Ardhika Rahmadhani Ubaidillah (@ardhikaxx). All Rights Reserved.**
